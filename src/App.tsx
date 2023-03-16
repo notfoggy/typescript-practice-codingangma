@@ -3,24 +3,28 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	interface User {
+		name: string;
+		age: number;
+	}
+
+	function join(name: string, age: number): User;
+	function join(name: string, age: string): string;
+	function join(name: string, age: number | string): User | string {
+		if (typeof age === 'number') {
+			return {
+				name,
+				age,
+			};
+		} else {
+			return '나이는 숫자로 입력해주세요';
+		}
+	}
+
+	const sam: User = join('Sam', 30);
+	const jane: string = join('jane', '30');
+
+	return <></>;
 }
 
 export default App;
