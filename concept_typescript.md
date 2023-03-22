@@ -210,3 +210,56 @@
 	1) 인터페이스에 제네릭 사용 (Mobile<T>), 인스턴스마다 option이 달라지므로 제네릭을 썼다.
 	2) 인터페이스의 인스턴스를 생성할 때는, 제네릭으로 사용할 타입을 명시해줘야함.
 	3) m1인스턴스의 경우에는 const m1: Mobile<object>도 되고, 타입을 세밀하게 확정하고 싶으면 Mobile<{ color: string; coupon: boolean }> 이런식으로 쓰면 됨.
+
+
+
+ - 수업3
+   interface User {
+    name: string;
+    age: number;
+  }
+
+  interface Car {
+    name: boolean;
+    color: string;
+  }
+
+  interface Book {
+    price: number;
+  }
+
+  const user: User = { name: "a", age: 10 };
+  const car: Car = { name: true, color: "red" };
+  const book: Book = { price: 3000 };
+
+  function showName<T extends { name: string }>(data: T): string {
+    return data.name;
+  }
+
+  showName(user);
+  showName(car); // 컴파일 에러
+  showName(book); // 컴파일 에러
+
+  설명
+	1) 제네릭 타입 매개변수 T와 extends 키워드를 사용하여 data 매개변수의 name 속성이 반드시 있어야 함을 명시하고 있다.
+	2) 이를 통해 함수가 호출될 때 data 매개변수에 name 속성이 없는 객체를 전달하면 컴파일러가 오류를 발생시킴.
+	3) 그러면 아래 두개는 같은거 아닌가?
+	   
+		function showName<T extends { name: string }>(data: T): string {
+		 return data.name;
+		}
+
+
+		function showName(data: { name: string }): string {
+			return data.name;
+		}
+
+	-> ChatGpt에서 설명
+		두 함수는 기능적으로는 같습니다.
+		하지만 첫 번째 함수는 TypeScript의 제네릭 타입 매개변수 T와 extends 키워드를 사용하여 data 매개변수의 name 속성이 반드시 있어야 함을 명시하고 있습니다. 이를 통해 함수가 호출될 때 data 매개변수에 name 속성이 없는 객체를 전달하면 컴파일러가 오류를 발생시킵니다.
+
+		반면에 두 번째 함수는 data 매개변수의 타입을 명확하게 지정하여 name 속성이 없는 객체를 전달하면 컴파일러가 경고를 발생시키지 않습니다.
+		따라서 첫 번째 함수는 타입 안정성을 보장하는 데 도움이 되며, 두 번째 함수는 단순히 name 속성이 있는 객체를 전달하는 경우에만 사용할 수 있습니다.
+  
+
+	-> But!, 내가 직접 해본 결과로는 둘다 컴파일에러가 발생함.
